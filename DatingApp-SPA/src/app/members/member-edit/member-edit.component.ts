@@ -12,12 +12,13 @@ import { AuthService } from 'src/app/_services/auth.service';
   styleUrls: ['./member-edit.component.css']
 })
 export class MemberEditComponent implements OnInit {
-  @ViewChild('editForm',{ static:true }) _editForm:NgForm;
+  @ViewChild('editForm', { static: true }) _editForm: NgForm;
   private _user: User;
+  private _photoUrl: string;
 
   @HostListener('window:beforeunload', ['$event'])
-  unloadNotification($event: any){
-    if(this._editForm.dirty){
+  unloadNotification($event: any) {
+    if(this._editForm.dirty) {
       $event.returnValue = true;
     }
   }
@@ -26,8 +27,12 @@ export class MemberEditComponent implements OnInit {
               private _authService: AuthService, private _alertify: AlertifyService) { }
 
   ngOnInit() {
-    this._route.data.subscribe(data=>{
+    this._route.data.subscribe(data => {
       this._user = data['user'];
+    });
+
+    this._authService.currentPhotoUrl.subscribe(data => {
+      this._photoUrl = data;
     });
   }
 
@@ -36,9 +41,8 @@ export class MemberEditComponent implements OnInit {
     this._userService.updateUser(this._authService.DecodedToken.nameid, this._user).subscribe(next =>{
     this._alertify.success('User updated successfully');
     this._editForm.reset(this._user);
-    }, error =>{
+    }, error => {
       this._alertify.error(error);
     });
   }
-
 }

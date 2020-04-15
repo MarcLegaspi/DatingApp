@@ -9,32 +9,39 @@ import { AlertifyService } from '../_services/alertify.service';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
-  private _model:any={}
+  private _model: any = {}
+  private _photoUrl: string;
 
-  constructor(private _authService:AuthService, private _alertify:AlertifyService, private _router:Router) { }
+  constructor(private _authService: AuthService, private _alertify: AlertifyService, private _router: Router) { }
 
   ngOnInit() {
+    this._authService.currentPhotoUrl.subscribe(data => {
+      this._photoUrl = data;
+    });
   }
 
-  onSubmit(){
+  onSubmit() {
     console.log(this._model);
-     this._authService.login(this._model).subscribe(res => 
-      {
-        this._alertify.success('Logged in successfully');
-      },error =>{
-        this._alertify.error(error);
-        this._router.navigate(['/home']);
-      }, () => {
-        this._router.navigate(['/members']);
-      })
+    this._authService.login(this._model).subscribe(res => {
+      this._alertify.success('Logged in successfully');
+      console.log(this._authService.CurrentUser);
+    }, error => {
+      this._alertify.error(error);
+      this._router.navigate(['/home']);
+    }, () => {
+      this._router.navigate(['/members']);
+    })
   }
 
-  loggedIn(){
+  loggedIn() {
     return this._authService.loggedIn();
   }
 
-  logout(){
+  logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this._authService.DecodedToken = null;
+    this._authService.CurrentUser = null;
     this._alertify.message('Logged out');
     this._router.navigate(['/home']);
   }

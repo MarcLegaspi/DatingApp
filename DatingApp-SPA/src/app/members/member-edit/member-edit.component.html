@@ -12,7 +12,7 @@
   <div class="row">
     <div class="col-sm-4">
       <div class="card">
-        <img src="{{_user.photoUrl}}" class="card-img-top img-thumbnail" alt="{{ _user.knownAs }}">
+        <img src="{{_photoUrl}}" class="card-img-top img-thumbnail" alt="{{ _user.knownAs }}">
         <div class="card-body">
           <div>
             <strong>Location:</strong>
@@ -58,7 +58,7 @@
             </form>
           </tab>
           <tab heading="Photos">
-            Your photos will go here
+            <app-photo-editor [_photos]="_user.photos" ></app-photo-editor>
           </tab>
         </tabset>
       </div>
