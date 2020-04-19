@@ -29,7 +29,7 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(AuthModelDto user)//no need frombody inferer, because we are already implementing ApiController
+        public async Task<IActionResult> Register(UserForRegisterDto user)//no need frombody inferer, because we are already implementing ApiController
         {
             user.Username = user.Username.ToLower();
 
@@ -38,14 +38,12 @@ namespace DatingApp.API.Controllers
                 return BadRequest("Username already exists");
             }
 
-            var userToCreate = new User
-            {
-                Username = user.Username
-            };
+            var userToCreate = _mapper.Map<User>(user);
 
             var createdUser = await _repo.Register(userToCreate, user.Password);
 
-            return StatusCode(201);
+            var userToReturn = _mapper.Map<UserForListDto>(createdUser);
+            return CreatedAtRoute("GetUser",new { controller ="users", id=createdUser.Id },userToReturn);
         }
 
         [HttpPost("login")]

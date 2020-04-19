@@ -1,6 +1,6 @@
 //https://www.json-generator.com/
 [
-  '{{repeat(5)}}',
+  '{{repeat(50)}}',
   {
     Username: '{{firstName("male")}}',
     Gender: 'male',
