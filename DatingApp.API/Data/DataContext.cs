@@ -20,12 +20,24 @@ namespace DatingApp.API.Data
                 .WithMany(m => m.Likees)
                 .HasForeignKey(m => m.LikerId)
                 .OnDelete(DeleteBehavior.Restrict);
-        }
-        public DataContext(DbContextOptions<DataContext> options):base(options){ }
 
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.Sender)
+                .WithMany(u => u.MessagesSent)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.Recipient)
+                .WithMany(u => u.MessagesReceived)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
+
+        public DataContext(DbContextOptions<DataContext> options):base(options){ }
+        
         public DbSet<Value> Values { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Like> Likes { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }
