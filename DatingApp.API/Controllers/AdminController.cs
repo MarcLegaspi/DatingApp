@@ -68,7 +68,10 @@ namespace DatingApp.API.Controllers
             if (!result.Succeeded)
                 return BadRequest("Failed to add to roles");
 
+
+
             var rolesToRemove = userRoles.Except(selectedRoles);
+
 
             result = await _userManager.RemoveFromRolesAsync(user, userRoles.Except(selectedRoles));
 
