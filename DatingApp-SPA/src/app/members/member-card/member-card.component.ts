@@ -18,7 +18,6 @@ export class MemberCardComponent implements OnInit {
 
   sendLike() {
     console.log(this._currentUser);
-    console.log(this._user);
     this._userService.sendLike(this._currentUser.id, this._user.id).subscribe(response => {
       this._alertify.success('You have liked: ' + this._user.username);
     }, error => {

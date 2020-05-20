@@ -44,10 +44,7 @@ namespace DatingApp.API.Data
 
         public async Task<PagedList<Message>> GetMessagesForUser(MessageParams messageParams)
         {
-            var messages = _context.Messages
-                            .Include(m => m.Sender).ThenInclude(m => m.Photos)
-                            .Include(m => m.Recipient).ThenInclude(m => m.Photos)
-                            .AsQueryable();
+            var messages = _context.Messages.AsQueryable();
 
             switch (messageParams.MessageContainer)
             {
@@ -70,8 +67,6 @@ namespace DatingApp.API.Data
         public async Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
         {
             var messages = await _context.Messages
-                            .Include(m => m.Sender).ThenInclude(m => m.Photos)
-                            .Include(m => m.Recipient).ThenInclude(m => m.Photos)
                             .Where(m => m.RecipientId == userId && m.RecipientDeleted == false 
                                         && m.SenderId == recipientId
                                     || m.SenderId == userId && m.RecipientId == recipientId
@@ -91,14 +86,14 @@ namespace DatingApp.API.Data
 
         public async Task<User> GetUser(int id)
         {
-            var user = await _context.Users.Include(m => m.Photos).FirstOrDefaultAsync(m => m.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(m => m.Id == id);
 
             return user;
         }
 
         public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
-            var users = _context.Users.Include(m => m.Photos).AsQueryable();
+            var users = _context.Users.AsQueryable();
 
             users = users.Where(m => m.Id != userParams.UserId);
 
@@ -148,8 +143,6 @@ namespace DatingApp.API.Data
         private async Task<IEnumerable<int>> GetUserLikes(int userId, bool likers)
         {
             var user = await _context.Users
-                        .Include(m => m.Likers)
-                        .Include(m => m.Likees)
                         .FirstOrDefaultAsync(m => m.Id == userId);
 
             if (likers)

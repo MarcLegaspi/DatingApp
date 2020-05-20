@@ -9,10 +9,10 @@ import { AlertifyService } from '../_services/alertify.service';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
-  private _model: any = {}
-  private _photoUrl: string;
+  _model: any = {}
+  _photoUrl: string;
 
-  constructor(private _authService: AuthService, private _alertify: AlertifyService, private _router: Router) { }
+  constructor(public _authService: AuthService, private _alertify: AlertifyService, private _router: Router) { }
 
   ngOnInit() {
     this._authService.currentPhotoUrl.subscribe(data => {

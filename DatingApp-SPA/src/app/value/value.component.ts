@@ -11,7 +11,7 @@ export class ValueComponent implements OnInit {
   constructor(private _http:HttpClient) { }
 
   ngOnInit() {
-    this._http.get('http://localhost:5000/api/values').subscribe(response => {
+    this._http.get('api/values').subscribe(response => {
       this.values = response;
       console.log(response);
     }, error =>{

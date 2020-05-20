@@ -13,12 +13,12 @@ import { AuthService } from 'src/app/_services/auth.service';
 })
 export class MemberEditComponent implements OnInit {
   @ViewChild('editForm', { static: true }) _editForm: NgForm;
-  private _user: User;
-  private _photoUrl: string;
+  _user: User;
+  _photoUrl: string;
 
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
-    if(this._editForm.dirty) {
+    if (this._editForm.dirty) {
       $event.returnValue = true;
     }
   }

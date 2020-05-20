@@ -18,16 +18,28 @@ export class AlertifyService {
   }
 
   success(message:string){
+    var delay = alertify.get('notifier', 'delay');
+    alertify.set('notifier', 'delay', 5);
     alertify.success(message);
+    alertify.set('notifier','delay', delay);
   }
   
   error(message:string){
+    var delay = alertify.get('notifier', 'delay');
+    alertify.set('notifier', 'delay', 5);
     alertify.error(message);
+    alertify.set('notifier','delay', delay);
   }
   warning(message:string){
+    var delay = alertify.get('notifier', 'delay');
+    alertify.set('notifier', 'delay', 5);
     alertify.warning(message);
+    alertify.set('notifier','delay', delay);
   }
   message(message:string){
+    var delay = alertify.get('notifier', 'delay');
+    alertify.set('notifier', 'delay', 5);
     alertify.message(message);
+    alertify.set('notifier','delay', delay);
   }
 }

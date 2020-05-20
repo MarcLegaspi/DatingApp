@@ -12,7 +12,7 @@ import { TabsetComponent } from 'ngx-bootstrap';
   styleUrls: ['./member-detail.component.css']
 })
 export class MemberDetailComponent implements OnInit {
-  private _user: User;
+  _user: User;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
   @ViewChild('staticTabs', { static: true }) staticTabs: TabsetComponent;

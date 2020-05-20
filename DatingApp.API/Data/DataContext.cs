@@ -1,12 +1,32 @@
 using DatingApp.API.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DatingApp.API.Data
 {
-    public class DataContext:DbContext
+    public class DataContext : IdentityDbContext<User, Role, int, IdentityUserClaim<int>,
+                            UserRole, IdentityUserLogin<int>, IdentityRoleClaim<int>,
+                            IdentityUserToken<int>>
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder); //needed for Identity
+            modelBuilder.Entity<UserRole>(userRole =>
+            {
+                userRole.HasKey(ur => new { ur.RoleId, ur.UserId });
+
+                userRole.HasOne(ur => ur.Role)
+                    .WithMany(r => r.UserRoles)
+                    .HasForeignKey(ur => ur.RoleId)
+                    .IsRequired();
+
+                userRole.HasOne(ur => ur.User)
+                    .WithMany(u => u.UserRoles)
+                    .HasForeignKey(ur => ur.UserId)
+                    .IsRequired();
+            });
+
             modelBuilder.Entity<Like>().HasKey(m => new { m.LikeeId, m.LikerId });
 
             modelBuilder.Entity<Like>()
@@ -32,12 +52,13 @@ namespace DatingApp.API.Data
                 .OnDelete(DeleteBehavior.Restrict);
         }
 
-        public DataContext(DbContextOptions<DataContext> options):base(options){ }
-        
+        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+
         public DbSet<Value> Values { get; set; }
-        public DbSet<User> Users { get; set; }
+        // public DbSet<User> Users { get; set; }// Conflict User from IdentityDbContext
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Message> Messages { get; set; }
+
     }
 }
